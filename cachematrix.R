@@ -1,15 +1,34 @@
-## Put comments here that give an overall description of what your
-## functions do
+## makeCacheMatrix takes matrix as input and return
+## list which contain function(returns matrix) that we want to make as public.
 
-## Write a short comment describing this function
 
 makeCacheMatrix <- function(x = matrix()) {
+  m<-NULL
+  set<-function(y){
+    x<<-y
+    m<<-NULL
+  }
+  get<-function() x
+  setInverse<-function(solve) m<<- solve
+  getInverse<-function() m
+  list(set=set, get=get,
+       setInverse=setInverse,
+       getInverse=getInverse)
 
 }
 
 
-## Write a short comment describing this function
+## cacheSolve function take makeCacheMatrix function output as input and return  
+## inverse matrix.
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+  m<-x$getInverse()
+  if(!is.null(m)){
+    message("getting cached data")
+    return(m)
+  }
+  matrix<-x$get()
+  m<-solve(matrix, ...)
+  x$setInverse(m)
+  m
 }
